@@ -18,7 +18,7 @@ bot = commands.Bot(command_prefix = "!", intents=discord.Intents.all(),help_comm
 
 
 
-##Queue function ##หยิบยืมจากผู็ใช้งาน Github ท่านหนึ่ง @EvieePy ####################################################
+##Queue function ##หยิบยืมจากผู็ใช้งาน Github @EvieePy ####################################################
 ytdlopts = {
     'format': 'bestaudio/best',
     'outtmpl': 'downloads/%(extractor)s-%(id)s-%(title)s.%(ext)s',
