@@ -12,8 +12,13 @@ import itertools
 from datetime import datetime, timedelta
 from youtube_dl import YoutubeDL
 intents = discord.Intents.default()
+
+#SET COMAMND PREFIX
 bot = commands.Bot(command_prefix = "!", intents=discord.Intents.all(),help_command=None)
 
+
+
+##Queue function ##หยิบยืมจากผู็ใช้งาน Github ท่านหนึ่ง @EvieePy ####################################################
 ytdlopts = {
     'format': 'bestaudio/best',
     'outtmpl': 'downloads/%(extractor)s-%(id)s-%(title)s.%(ext)s',
@@ -157,7 +162,8 @@ class MusicPlayer:
         del players[self._guild]
         await self.guild.voice_client.disconnect()
         return self.bot.loop.create_task(self._cog.cleanup(guild))
-
+    
+###########################################################################################################################
 
 
 
@@ -166,15 +172,26 @@ async def on_ready():
     await bot.tree.sync()
     print(f"IM READY!")
 
+    #Slash Commands
 @bot.tree.command(name="ping", description="Shows pings/เเสดงค่าปิง")
 async def ping(interaction: discord.Interaction):
      bot_latency = round(bot.latency * 1000)
      await interaction.response.send_message(f"ping = {bot_latency} ms.!!")
 
-@bot.tree.command(name="ด่าเดลที", description="บอทจะทำการด่าโมเดล")
-async def ping(interaction: discord.Interaction):
-     await interaction.response.send_message(f"ควยเดล")
+@bot.tree.command(name="hello", description="Say Hi!")
+async def hi(interaction: discord.Interaction):
+     await interaction.response.send_message(f"Hi!")
 
+@bot.tree.command(name="help", description="Get help command")
+async def gethelp(interaction: discord.Interaction):
+     await interaction.response.send_message(f"Type | !help To see commands")
+
+   
+     
+
+
+
+    #Prefix comamnds (!)
 @bot.command()
 async def play(ctx,* ,search: str):
      channel = ctx.author.voice.channel
@@ -201,9 +218,7 @@ def get_player(ctx):
      
     return player
 
-
-
-     
+#Stop commad
 @bot.command()
 async def stop(ctx):
      voice_client = get(bot.voice_clients, guild=ctx.guild)
@@ -215,7 +230,7 @@ async def stop(ctx):
           await ctx.channel.send("Dwalen is currently to another channel!")
           return
      voice_client.stop()
-
+#Pause commad
 @bot.command()
 async def pause(ctx):
      voice_client = get(bot.voice_clients, guild=ctx.guild)
@@ -227,7 +242,7 @@ async def pause(ctx):
           await ctx.channel.send("Dwalen is currently to another channel!")
           return
      voice_client.pause()
-
+#Resume command
 @bot.command()
 async def resume(ctx):
      voice_client = get(bot.voice_clients, guild=ctx.guild)
@@ -239,12 +254,13 @@ async def resume(ctx):
           await ctx.channel.send("Dwalen is currently to another channel!")
           return
      voice_client.resume()
-   
+#Leave commad
 @bot.command()
 async def leave(ctx):
      del players[ctx.guild.id]
      await ctx.voice_client.disconnect()
 
+#Help comamnd
 @bot.command()
 async def help(ctx):
      emBed = discord.Embed(title="**Commands Lists**", description="All Dwalen Commands!", color=0x0fefff)
@@ -256,11 +272,10 @@ async def help(ctx):
      emBed.add_field(name="!leave", value="เพื่อให้บอทออกจากVC", inline=False)
      emBed.add_field(name="!skip", value="เพื่อข้ามเพลง", inline=False)
      emBed.add_field(name="!queuelist", value="เช็คคิวเพลง", inline=False)
-
      emBed.set_thumbnail(url='https://playgroundai.com/post/cln0a3so908z2s601mgz2l2zdg')
      emBed.set_footer(text='**Enjoy!!**', icon_url='https://playgroundai.com/post/cln0a3so908z2s601mgz2l2zd')
      await ctx.send(embed=emBed)
-
+#Join command
 @bot.command()
 async def join(ctx):
      channel = ctx.author.voice.channel
@@ -270,24 +285,21 @@ async def join(ctx):
           ctx.channel.send("Joined")
           await channel.connect()
           voice_client = get(bot.voice_clients, guild=ctx.guild)
-
+#Queue command
 @bot.command()
 async def queuelist(ctx):
     voice_client = get(bot.voice_clients, guild=ctx.guild)
-
     if voice_client == None or not voice_client.is_connected():
           await ctx.channel.send("Dwalen is not connected to VC!", delete_after=10)
           return
-    
     player = get_player(ctx)
     if player.queue.empty():
         return await ctx.send('There are currently no more queued!')
-    
     upcoming = list(itertools.islice(player.queue._queue,0,player.queue.qsize()))
     fmt = '\n'.join(f'**`{_["title"]}`**' for _ in upcoming)
     embed = discord.Embed(title=f'Upcoming - Next {len(upcoming)}', description=fmt)
     await ctx.send(embed=embed)
-
+#Skip command
 @bot.command()
 async def skip(ctx):
    voice_client = get(bot.voice_clients, guild=ctx.guild)
@@ -295,7 +307,6 @@ async def skip(ctx):
    if voice_client == None or not voice_client.is_connected():
             await ctx.channel.send("Bot is not connected to vc", delete_after=10)
             return
-
    if voice_client.is_paused():
             pass
    elif not voice_client.is_playing():
@@ -304,6 +315,6 @@ async def skip(ctx):
    voice_client.stop()
    await ctx.send(f'**`{ctx.author}`**: Skipped the song!')
     
-
-bot.run("MTE1MjIxMDI0MTY0NDE0MjYyMg.GVZRYU.P9NUHzVnMLmv54LNyjsfpdvOrJU5VR_EX-w9co")
+#Run command
+bot.run("MTE1MjIxMDI0MTY0NDE0MjYyMg.GXkPV5.CNnMI9jM8ROSiaNbfbVqc-7omukFyUKcq0HOlk")
 
