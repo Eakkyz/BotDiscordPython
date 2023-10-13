@@ -316,5 +316,5 @@ async def skip(ctx):
    await ctx.send(f'**`{ctx.author}`**: Skipped the song!')
     
 #Run command
-bot.run("MTE1MjIxMDI0MTY0NDE0MjYyMg.GXkPV5.CNnMI9jM8ROSiaNbfbVqc-7omukFyUKcq0HOlk")
+bot.run("TOKEN")#ในส่วนของtokenขออนุญาติปิดไว้นะครับเพื่อกันไม่ให้คนอื่นเอาบอทผมไปรันที่อื่น
 
