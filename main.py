@@ -17,8 +17,8 @@ intents = discord.Intents.default()
 bot = commands.Bot(command_prefix = "!", intents=discord.Intents.all(),help_command=None)
 
 
+###########################################################################################################################
 
-##Queue function ##หยิบยืมจากผู็ใช้งาน Github @EvieePy ####################################################
 ytdlopts = {
     'format': 'bestaudio/best',
     'outtmpl': 'downloads/%(extractor)s-%(id)s-%(title)s.%(ext)s',
